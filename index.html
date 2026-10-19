@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0c17" />
+  <title>Nothing to see here.</title>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 25%,#142b4b 0%,#0c192c 46%,#070e1a 100%);color:#f2f8ff;overflow:hidden}
+    main{text-align:center;padding:24px;z-index:1}h1{font-size:clamp(2.3rem,7vw,5rem);letter-spacing:-.06em;margin:0 0 14px}p{color:#9fb2cc;margin:0 0 30px;font-size:1.05rem}.hint{font-size:.8rem;opacity:.6;margin-top:32px}
+    button{background:#4da3ff;color:#06172b;border:0;border-radius:15px;padding:13px 22px;font:700 1rem inherit;cursor:pointer;box-shadow:0 10px 35px #228cff44;transition:transform .2s,background .2s}button:hover{transform:translateY(-3px);background:#85c5ff}button:focus-visible{outline:3px solid white;outline-offset:4px}
+    #secret{position:fixed;inset:0;display:grid;place-items:center;background:#06101eef;opacity:0;pointer-events:none;transition:opacity .35s;z-index:5}#secret.active{opacity:1;pointer-events:auto}.number{font-size:clamp(8rem,30vw,23rem);font-weight:1000;letter-spacing:-.12em;line-height:1;background:linear-gradient(130deg,#fff,#4da3ff,#83d6ff);background-clip:text;color:transparent;animation:pulse 1s infinite alternate;filter:drop-shadow(0 0 35px #339dff88)}@keyframes pulse{to{transform:scale(1.09) rotate(-3deg)}}.secret-inner{text-align:center}.secret-inner p{margin:24px 0}.secret-inner button{background:#173451;color:#fff}.spark{position:fixed;pointer-events:none;font-weight:900;animation:fly 1.6s ease-out forwards;z-index:6}@keyframes fly{to{transform:translate(var(--x),var(--y)) rotate(720deg);opacity:0}}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Nothing to see here<span style="color:#4da3ff">.</span></h1>
+    <p>Just a completely normal corner of the internet.</p>
+    <button id="button">Do not click</button>
+    <div class="hint">Psst... some numbers are more special than others.</div>
+  </main>
+  <div id="secret" role="dialog" aria-modal="true" aria-label="Secret discovered" aria-hidden="true">
+    <div class="secret-inner"><div class="number">67</div><p>YOU FOUND THE 67 EASTER EGG.</p><button id="close">Escape the 67</button></div>
+  </div>
+  <script>
+    const button=document.getElementById('button'),secret=document.getElementById('secret'),close=document.getElementById('close');
+    let clicks=0,sequence='';
+    function reveal(){secret.classList.add('active');secret.setAttribute('aria-hidden','false');close.focus();for(let i=0;i<36;i++){const s=document.createElement('span');s.className='spark';s.textContent='67';s.style.left=(30+Math.random()*40)+'vw';s.style.top=(30+Math.random()*40)+'vh';s.style.color=['#86c5ff','#339dff','#fff'][i%3];s.style.setProperty('--x',(Math.random()*900-450)+'px');s.style.setProperty('--y',(Math.random()*800-400)+'px');document.body.append(s);setTimeout(()=>s.remove(),1600)}}
+    function hide(){secret.classList.remove('active');secret.setAttribute('aria-hidden','true');button.focus()}
+    button.addEventListener('click',()=>{clicks++;button.textContent=clicks<6?['Are you sure?','Seriously?','Stop clicking.','Last warning.','Okay, fine.'][clicks-1]:'67';if(clicks>=6)reveal()});
+    close.addEventListener('click',hide);document.addEventListener('keydown',e=>{if(e.key==='Escape')hide();if(e.key==='6'||e.key==='7'){sequence=(sequence+e.key).slice(-2);if(sequence==='67')reveal()}});
+  </script>
+</body>
+</html>
